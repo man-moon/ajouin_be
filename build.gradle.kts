@@ -28,6 +28,7 @@ repositories {
 }
 
 dependencies {
+	implementation("org.springframework.boot:spring-boot-starter")
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 	implementation("org.springframework.boot:spring-boot-starter-mail")
 	implementation("org.springframework.boot:spring-boot-starter-security")
@@ -49,6 +50,12 @@ dependencies {
 	//QueryDsl
 	implementation ("com.querydsl:querydsl-jpa:5.0.0:jakarta")
 	kapt("com.querydsl:querydsl-apt:5.0.0:jakarta")
+
+	// redis
+	implementation("org.springframework.boot:spring-boot-starter-data-redis")
+
+	//jsoup
+	implementation("org.jsoup:jsoup:1.16.1")
 }
 
 tasks.withType<KotlinCompile> {

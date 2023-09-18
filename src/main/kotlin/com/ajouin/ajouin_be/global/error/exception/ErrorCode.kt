@@ -30,4 +30,11 @@ enum class ErrorCode(
     NOT_ALLOWED_NICKNAME_LENGTH(400, "M008", "닉네임은 2자 이상, 10자 이하여야 해요."),
     EMAIL_INVALID(400, "M009", "학교 이메일이 아니에요."),
 
+    // Post
+    POST_TITLE_LENGTH_INVALID(400, "P001", "게시글 제목은 2글자 이상이여야 해요."),
+    POST_CONTENT_LENGTH_INVALID(400, "P002", "게시글 내용은 2글자 이상이여야 해요."),
+    POST_TAG_INVALID(400, "P003", "게시글 태그를 지정해주세요."),
+    POST_TITLE_VALUE_INVALID(400, "P004", "제목이 부적절해요."),
+    POST_CONTENT_VALUE_INVALID(400, "P005", "부적절한 내용이에요."),
+    POST_COMMENT_LENGTH_INVALID(400, "P006","댓글 내용은 2글자 이상이여야 해요."),
 }

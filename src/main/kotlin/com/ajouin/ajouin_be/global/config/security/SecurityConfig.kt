@@ -49,11 +49,12 @@ class SecurityConfig(
             }
             .authorizeHttpRequests {
                 it
-                    .requestMatchers(mvcMatcherBuilder.pattern("/auth/signup")).anonymous()
-                    .requestMatchers(mvcMatcherBuilder.pattern("/auth/login")).anonymous()
-                    .requestMatchers(mvcMatcherBuilder.pattern("/auth/**")).permitAll()
-                    .requestMatchers(AntPathRequestMatcher("/h2-console/**")).permitAll()
-                    .anyRequest().authenticated()
+                    .anyRequest().permitAll()
+//                    .requestMatchers(mvcMatcherBuilder.pattern("/auth/signup")).anonymous()
+//                    .requestMatchers(mvcMatcherBuilder.pattern("/auth/login")).anonymous()
+//                    .requestMatchers(mvcMatcherBuilder.pattern("/auth/**")).permitAll()
+//                    .requestMatchers(AntPathRequestMatcher("/h2-console/**")).permitAll()
+//                    .anyRequest().authenticated()
             }
             .addFilter(corsFilter())
             .addFilterBefore(   //Filter 실행 순서 지정, 앞의 필터에서 실행이 성공하면 뒤의 필터는 실행하지 않음
