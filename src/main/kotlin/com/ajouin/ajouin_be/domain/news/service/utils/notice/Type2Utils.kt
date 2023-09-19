@@ -1,4 +1,4 @@
-package com.ajouin.ajouin_be.domain.news.service.utils.notice_type
+package com.ajouin.ajouin_be.domain.news.service.utils.notice
 
 import com.ajouin.ajouin_be.domain.news.domain.SchoolNotice
 import com.ajouin.ajouin_be.domain.news.domain.Type
@@ -7,17 +7,30 @@ import org.jsoup.nodes.Element
 import java.text.SimpleDateFormat
 import java.util.*
 
-//신버전 + 서브공지(ex. 취업정보) + bn-list-common02 버전
-class Type6Utils {
+//소웨 자체 공지
+class Type2Utils {
     companion object {
-        const val SELECTOR = "#cms-content > div > div > div.bn-list-common02.type01.bn-common > table > tbody > tr"
+        const val SELECTOR = "#sub_contents > div > div.conbody > table:nth-child(2) > tbody > tr"
+
         fun parseNotice(type: Type, row: Element, lastId: Long): SchoolNotice? {
-            //공지 자체 번호
-            val num = row.select("td.b-num-box").text()
-            val title = row.select("td.b-td-left > div > a").text()
-            val link = row.select("td.b-td-left > div > a").attr("href")
+            if(row.attr("height") != "45") return null
+
+            var num: String = "0"
+
+            val isTopFixed = row.select("td > img").firstOrNull()
+            if(isTopFixed != null) {
+                num = "공지"
+            }
+
+            val titleAndLinkElement = row.select("td.responsive03 > a")
+            val title = titleAndLinkElement.text().trim()
+            val link = titleAndLinkElement.attr("href")
+
+            if(title == "") return null
+
             val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-            val date: Date = dateFormat.parse(row.select("td:nth-child(5)").text())
+            val dateText = row.select("td.responsive03 > p.tablet_regist_date").text()
+            val date = dateFormat.parse(dateText) ?: Date()
 
             val id = Utils.getPostId(link)
 
