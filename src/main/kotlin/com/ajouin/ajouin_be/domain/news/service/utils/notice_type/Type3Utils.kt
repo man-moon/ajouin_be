@@ -1,4 +1,4 @@
-package com.ajouin.ajouin_be.domain.news.service.utils.type
+package com.ajouin.ajouin_be.domain.news.service.utils.notice_type
 
 import com.ajouin.ajouin_be.domain.news.domain.SchoolNotice
 import com.ajouin.ajouin_be.domain.news.domain.Type
@@ -7,19 +7,17 @@ import org.jsoup.nodes.Element
 import java.text.SimpleDateFormat
 import java.util.*
 
-//산업공학과 정보공유, 취업정보에서 사용
-//신버전 + 서브공지(ex. 취업정보)
-class Type5Utils {
+//옛날버전메인
+class Type3Utils {
     companion object {
-        const val SELECTOR = "#cms-content > div > div > div.bn-list-common01.type01.bn-common > table > tbody > tr"
+        const val SELECTOR = "#jwxe_main_content > div > div.list_wrap > table > tbody > tr"
 
         fun parseNotice(type: Type, row: Element, lastId: Long): SchoolNotice? {
             //공지 자체 번호
-            val num = row.select("td.b-num-box").text()
-            val title = row.select("td.b-td-left > div > a").text()
-            val link = row.select("td.b-td-left > div > a").attr("href")
+            val title = row.select("td > a").text().trim()
+            val link = row.select("td > a").attr("href")
             val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-            val date: Date = dateFormat.parse(row.select("td:nth-child(5)").text())
+            val date: Date = dateFormat.parse(row.select("td:nth-child(6)").text().trim())
 
             val id = Utils.getPostId(link)
 
@@ -30,7 +28,7 @@ class Type5Utils {
                     title = title,
                     link = link,
                     type = type,
-                    isTopFixed = num == "공지",
+                    isTopFixed = false,
                     date = date,
                     fetchId = id,
                 )
