@@ -56,6 +56,9 @@ dependencies {
 
 	//jsoup
 	implementation("org.jsoup:jsoup:1.16.1")
+
+	//instagram crawler
+	implementation("com.github.instagram4j:instagram4j:2.0.7")
 }
 
 tasks.withType<KotlinCompile> {
