@@ -41,7 +41,7 @@ jobs:
       - name: Generate deployment package
         run: |
           mkdir -p deploy
-          cp build/libs/*.jar deploy/ajouin-${{steps.current-time.outputs.formattedTime}}-${{github.sha}}.jar
+          cp build/libs/*.jar deploy/ajou-community-${{steps.current-time.outputs.formattedTime}}-${{github.sha}}.jar
 
       - name: Beanstalk Deploy
         uses: einaregilsson/beanstalk-deploy@v14
