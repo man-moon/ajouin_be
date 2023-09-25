@@ -54,7 +54,7 @@ class SchoolNoticeCrawler (
             }
         }
 
-        lastId = notices.maxOfOrNull { it.fetchId!! } ?: return
+        lastId = notices.maxOfOrNull { it.fetchId } ?: return
         lastIdByType.lastId = lastId
 
         schoolNoticeRepository.saveAll(notices)

@@ -1,4 +1,4 @@
-package com.ajouin.ajouin_be.domain.news.service.utils.type
+package com.ajouin.ajouin_be.domain.news.service.utils.notice
 
 import com.ajouin.ajouin_be.domain.news.domain.SchoolNotice
 import com.ajouin.ajouin_be.domain.news.domain.Type

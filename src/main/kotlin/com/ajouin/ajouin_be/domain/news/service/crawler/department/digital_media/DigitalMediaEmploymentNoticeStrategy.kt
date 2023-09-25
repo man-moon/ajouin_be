@@ -3,7 +3,7 @@ package com.ajouin.ajouin_be.domain.news.service.crawler.department.digital_medi
 import com.ajouin.ajouin_be.domain.news.service.crawler.NoticeCrawlerStrategy
 import com.ajouin.ajouin_be.domain.news.domain.SchoolNotice
 import com.ajouin.ajouin_be.domain.news.domain.Type
-import com.ajouin.ajouin_be.domain.news.service.utils.type.Type4Utils
+import com.ajouin.ajouin_be.domain.news.service.utils.notice.Type4Utils
 import org.jsoup.nodes.Element
 import org.springframework.stereotype.Component
 
