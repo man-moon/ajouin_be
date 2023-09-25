@@ -19,4 +19,9 @@ class NoticeController(
         val result = noticeService.getNotice(noticeRequest.notices)
         return NoticeResponse(result)
     }
+
+    @GetMapping("/testapi")
+    fun testApi(): String {
+        return "test"
+    }
 }
