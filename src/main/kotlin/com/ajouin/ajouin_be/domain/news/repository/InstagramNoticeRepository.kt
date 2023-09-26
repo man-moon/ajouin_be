@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface InstagramNoticeRepository: JpaRepository<InstagramNotice, Long> {
+    fun findByCouncilType(type: String): List<InstagramNotice>
 }

@@ -61,6 +61,9 @@ dependencies {
 
 	//instagram crawler
 	implementation("com.github.instagram4j:instagram4j:2.0.7")
+
+	implementation("com.slack.api:slack-api-client:1.32.1")
+
 }
 
 tasks.withType<KotlinCompile> {

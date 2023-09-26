@@ -11,6 +11,8 @@ import com.github.instagram4j.instagram4j.responses.IGResponse
 import com.github.instagram4j.instagram4j.responses.accounts.LoginResponse
 import com.github.instagram4j.instagram4j.responses.feed.FeedUserResponse
 import com.github.instagram4j.instagram4j.utils.IGChallengeUtils
+import com.slack.api.Slack
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -30,7 +32,10 @@ class InstagramNoticeCrawler (
 
     private val logger = org.slf4j.LoggerFactory.getLogger(InstagramNoticeCrawler::class.java)
 
-//    @Scheduled(fixedRate = 43200000)  // 12시간마다
+    @Value("\${slack.webhook.url}")
+    lateinit var webHookUrl: String
+
+    @Scheduled(fixedRate = 43200000)  // 12시간마다
     fun crawl() {
         try {
             // Map 순서 랜덤으로 배치
@@ -92,7 +97,8 @@ class InstagramNoticeCrawler (
             }
         } catch (e: Exception) {
             // 예외 발생 시 Slack 알림 전송 로직
-            // ...
+            val slackClient = Slack()
+            slackClient.send(webHookUrl, "Instagram Crawler Error: ${e.message}")
             return
         }
 
