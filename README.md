@@ -1,3 +1,4 @@
 # ajouin_be
 
-https://github.com/OWNER/REPOSITORY/actions/workflows/WORKFLOW-FILE/badge.svg
+![example workflow]
+(https://github.com/github/docs/actions/workflows/main.yml/badge.svg)
