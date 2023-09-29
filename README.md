@@ -1,4 +1,3 @@
 # ajouin_be
 
-![example workflow]
-(https://github.com/github/docs/actions/workflows/main.yml/badge.svg)
+[![BE CD](https://github.com/man-moon/ajouin_be/actions/workflows/deploy.yml/badge.svg?branch=main)](https://github.com/man-moon/ajouin_be/actions/workflows/deploy.yml)
