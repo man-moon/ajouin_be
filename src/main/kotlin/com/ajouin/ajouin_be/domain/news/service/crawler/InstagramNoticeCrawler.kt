@@ -35,7 +35,7 @@ class InstagramNoticeCrawler (
     @Value("\${slack.webhook.url}")
     lateinit var webHookUrl: String
 
-    @Scheduled(fixedRate = 43200000)  // 12시간마다
+//    @Scheduled(fixedRate = 43200000)  // 12시간마다
     fun crawl() {
         try {
             // Map 순서 랜덤으로 배치
