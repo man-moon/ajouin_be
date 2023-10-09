@@ -3,6 +3,7 @@ package com.ajouin.ajouin_be.domain.member.service
 import com.ajouin.ajouin_be.domain.member.domain.EmailVerification
 import com.ajouin.ajouin_be.domain.member.dto.request.CodeVerificationRequest
 import com.ajouin.ajouin_be.domain.member.dto.request.EmailVerificationRequest
+import com.ajouin.ajouin_be.domain.member.dto.request.PasswordResetRequest
 import com.ajouin.ajouin_be.domain.member.exception.EmailDuplicateException
 import com.ajouin.ajouin_be.domain.member.repository.EmailVerificationRepository
 import com.ajouin.ajouin_be.domain.member.repository.MemberRepository
@@ -56,6 +57,31 @@ class EmailVerificationServiceV0(
         emailVerificationRepository.save(verification)
 
         return true;
+    }
+
+    @Transactional
+    override fun sendVerificationEmailForResetPassword(
+        emailVerificationRequest: EmailVerificationRequest
+    ): EmailVerification {
+
+        //이미 가입된 이메일인지 확인
+        val isExistingMember: Boolean = memberRepository.existsByEmail(emailVerificationRequest.email)
+        if (!isExistingMember) {
+            throw BusinessException(ErrorCode.EMAIL_NOT_EXIST)
+        }
+
+        val verificationCode = codeGenerator.generate()
+        val savedVerification = emailVerificationRepository.save(
+            EmailVerification(
+                email = emailVerificationRequest.email,
+                code = verificationCode,
+            )
+        )
+
+        val message = buildEmailMessage(emailVerificationRequest, verificationCode)
+        sendEmail(message)
+
+        return savedVerification
     }
 
     private fun verifyCodeOrThrowException(

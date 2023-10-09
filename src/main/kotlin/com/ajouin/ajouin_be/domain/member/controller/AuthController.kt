@@ -1,9 +1,5 @@
 package com.ajouin.ajouin_be.domain.member.controller
 
-import com.ajouin.ajouin_be.domain.member.dto.request.CodeVerificationRequest
-import com.ajouin.ajouin_be.domain.member.dto.request.EmailVerificationRequest
-import com.ajouin.ajouin_be.domain.member.dto.request.LoginRequest
-import com.ajouin.ajouin_be.domain.member.dto.request.SignupRequest
 import com.ajouin.ajouin_be.domain.member.dto.response.CodeVerificationResponse
 import com.ajouin.ajouin_be.domain.member.dto.response.EmailVerificationResponse
 import com.ajouin.ajouin_be.domain.member.dto.response.SignupResponse
@@ -11,6 +7,7 @@ import com.ajouin.ajouin_be.domain.member.service.AuthService
 import com.ajouin.ajouin_be.domain.member.service.EmailVerificationService
 import com.ajouin.ajouin_be.domain.member.domain.EmailVerification
 import com.ajouin.ajouin_be.domain.member.domain.Member
+import com.ajouin.ajouin_be.domain.member.dto.request.*
 import com.ajouin.ajouin_be.global.config.security.TokenInfo
 import jakarta.validation.Valid
 import org.springframework.web.bind.annotation.*
@@ -22,6 +19,7 @@ class AuthController(
     private val authService: AuthService,
     private val emailVerificationService: EmailVerificationService,
 ) {
+    private val logger = org.slf4j.LoggerFactory.getLogger(AuthController::class.java)
     @PostMapping("/signup")
     fun signup(@Valid @RequestBody signupRequest: SignupRequest): SignupResponse {
 
@@ -62,4 +60,19 @@ class AuthController(
         )
     }
 
+    @PostMapping("/email/resetpassword")
+    fun sendVerificationEmailForResetPassword(
+        @Valid @RequestBody emailVerificationRequest: EmailVerificationRequest
+    ): EmailVerificationResponse {
+        val emailVerification: EmailVerification = emailVerificationService.sendVerificationEmailForResetPassword(emailVerificationRequest)
+        return EmailVerificationResponse.fromEmailVerification(emailVerification)
+    }
+
+    @PostMapping("/resetpassword")
+    fun resetPassword(
+        @Valid @RequestBody passwordResetRequest: PasswordResetRequest
+    ): ResponseEntity<Any> {
+        authService.resetPassword(passwordResetRequest)
+        return ResponseEntity.ok().build()
+    }
 }

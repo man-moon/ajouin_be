@@ -1,19 +1,19 @@
 package com.ajouin.ajouin_be.domain.member.service
 
-import com.ajouin.ajouin_be.domain.member.exception.NicknameDuplicateException
 import com.ajouin.ajouin_be.domain.member.domain.Member
 import com.ajouin.ajouin_be.domain.member.dto.request.LoginRequest
+import com.ajouin.ajouin_be.domain.member.dto.request.PasswordResetRequest
 import com.ajouin.ajouin_be.domain.member.dto.request.SignupRequest
-import com.ajouin.ajouin_be.domain.member.exception.EmailDuplicateException
-import com.ajouin.ajouin_be.domain.member.exception.InappropriateNicknameException
-import com.ajouin.ajouin_be.domain.member.exception.NicknameLengthException
+import com.ajouin.ajouin_be.domain.member.exception.*
 import com.ajouin.ajouin_be.domain.member.repository.EmailVerificationQuerydslRepository
+import com.ajouin.ajouin_be.domain.member.repository.EmailVerificationRepository
 import com.ajouin.ajouin_be.domain.member.repository.MemberRepository
 import com.ajouin.ajouin_be.domain.model.InputFilter
 import com.ajouin.ajouin_be.global.config.security.JwtTokenProvider
 import com.ajouin.ajouin_be.global.config.security.TokenInfo
 import com.ajouin.ajouin_be.global.error.exception.BusinessException
 import com.ajouin.ajouin_be.global.error.exception.ErrorCode
+import com.ajouin.ajouin_be.global.error.exception.InvalidValueException
 import lombok.extern.slf4j.Slf4j
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
@@ -26,6 +26,7 @@ import org.springframework.transaction.annotation.Transactional
 class AuthServiceV0(
     private val memberRepository: MemberRepository,
     private val emailVerificationQuerydslRepository: EmailVerificationQuerydslRepository,
+    private val emailVerificationRepository: EmailVerificationRepository,
     private val authenticationManagerBuilder: AuthenticationManagerBuilder,
     private val jwtTokenProvider: JwtTokenProvider,
     private val passwordEncoder: PasswordEncoder,
@@ -59,16 +60,34 @@ class AuthServiceV0(
         return true;
     }
 
+    @Transactional
+    override fun resetPassword(
+        passwordResetRequest: PasswordResetRequest
+    ): Boolean {
+        val member = memberRepository.findByEmail(passwordResetRequest.email)
+            ?: throw EmailNotFoundException()
+
+        val emailVerification = emailVerificationRepository.findById(passwordResetRequest.id)
+        if (emailVerification != null) {
+            if(emailVerification.isVerified) {
+                member.password = passwordEncoder.encode(passwordResetRequest.password)
+            }
+        } else {
+            throw InvalidValueException()
+        }
+        return true
+    }
+
     private fun verifySignupOrThrowException(member: Member) {
         if (emailVerificationQuerydslRepository.notExists(member.email)) {
             throw BusinessException(ErrorCode.NOT_VERIFIED)
         }
 
-        verifyNicknameOrThrowException(member.nickname)
+//        verifyNicknameOrThrowException(member.nickname)
 
-        if (memberRepository.existsByNickname(member.nickname)) {
-            throw NicknameDuplicateException()
-        }
+//        if (memberRepository.existsByNickname(member.nickname)) {
+//            throw NicknameDuplicateException()
+//        }
         if (memberRepository.existsByEmail(member.email)) {
             throw EmailDuplicateException()
         }

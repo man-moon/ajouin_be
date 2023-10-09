@@ -17,7 +17,7 @@ class Type2Utils {
 
             var num: String = "0"
 
-            val isTopFixed = row.select("td > img").firstOrNull()
+            val isTopFixed = row.select("td > img[src=\"/skin/bbs/basic_responsive_new/images/btn_notice.gif\"]").firstOrNull()
             if(isTopFixed != null) {
                 num = "공지"
             }

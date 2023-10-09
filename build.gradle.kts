@@ -64,6 +64,9 @@ dependencies {
 
 	implementation("com.slack.api:slack-api-client:1.32.1")
 
+	//mysql
+	runtimeOnly("com.mysql:mysql-connector-j")
+
 }
 
 tasks.withType<KotlinCompile> {

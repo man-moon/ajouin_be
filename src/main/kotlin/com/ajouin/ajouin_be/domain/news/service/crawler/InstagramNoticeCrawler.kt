@@ -87,12 +87,10 @@ class InstagramNoticeCrawler (
 
                     // 7초~12초 사이 랜덤 대기
                     val sleepTime = Random.nextLong(7000, 12000)  // 7000 to 11999 milliseconds
-                    logger.info("Sleeping for $sleepTime milliseconds")
                     TimeUnit.MILLISECONDS.sleep(sleepTime)
                 }
                 // 10분~15분 사이 랜덤 대기
                 val longSleepTime = Random.nextLong(600000, 900000)  // 600000 to 899999 milliseconds
-                logger.info("Sleeping for $longSleepTime milliseconds")
                 TimeUnit.MILLISECONDS.sleep(longSleepTime)
             }
         } catch (e: Exception) {

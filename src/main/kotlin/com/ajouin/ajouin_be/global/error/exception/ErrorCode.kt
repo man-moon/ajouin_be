@@ -29,6 +29,8 @@ enum class ErrorCode(
     INAPPROPRIATE_NICKNAME(400, "M007", "부적절한 닉네임이에요."),
     NOT_ALLOWED_NICKNAME_LENGTH(400, "M008", "닉네임은 2자 이상, 10자 이하여야 해요."),
     EMAIL_INVALID(400, "M009", "학교 이메일이 아니에요."),
+    EMAIL_NOT_EXIST(400, "M010", "해당 이메일로 가입된 계정이 존재하지 않아요."),
+    EMAIL_VERIFICATION_NOT_FOUND(400, "M011", "이메일 인증 정보를 찾을 수 없어요."),
 
     // Post
     POST_TITLE_LENGTH_INVALID(400, "P001", "게시글 제목은 2글자 이상이여야 해요."),
@@ -37,4 +39,7 @@ enum class ErrorCode(
     POST_TITLE_VALUE_INVALID(400, "P004", "제목이 부적절해요."),
     POST_CONTENT_VALUE_INVALID(400, "P005", "부적절한 내용이에요."),
     POST_COMMENT_LENGTH_INVALID(400, "P006","댓글 내용은 2글자 이상이여야 해요."),
+
+    // SchoolNotice
+    SCHOOL_NOTICE_NOT_FOUND(400, "S001", "존재하지 않는 공지사항이에요."),
 }

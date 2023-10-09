@@ -1,17 +1,21 @@
 package com.ajouin.ajouin_be.domain.news.service.crawler
 
 import com.ajouin.ajouin_be.domain.news.domain.LastIdPerType
+import com.ajouin.ajouin_be.domain.news.domain.LatestUpdateTime
 import com.ajouin.ajouin_be.domain.news.domain.SchoolNotice
 import com.ajouin.ajouin_be.domain.news.domain.Type
 import com.ajouin.ajouin_be.domain.news.repository.LastIdPerTypeRepository
 import com.ajouin.ajouin_be.domain.news.repository.SchoolNoticeRepository
 import com.slack.api.Slack
+import com.slack.api.model.Latest
 import org.jsoup.Jsoup
+import org.jsoup.nodes.Document
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.time.LocalDateTime
 
 @Service
 class SchoolNoticeCrawler (
@@ -30,15 +34,25 @@ class SchoolNoticeCrawler (
         for (strategy in strategies) {
             crawlByStrategy(strategy)
         }
-        logger.info("공지사항 데이터 수집 완료")
 
         val slackClient = Slack.getInstance()
         slackClient.send(webHookUrl, "{\"text\" : \"공지사항 데이터 수집 완료\"}")
+
+        //최근 업데이트 시각 설정
+        LatestUpdateTime.latestUpdateTime = LocalDateTime.now()
     }
 
     fun crawlByStrategy(strategy: NoticeCrawlerStrategy) {
         val url = strategy.url
-        val doc = Jsoup.connect(url).get()
+        var doc: Document
+        try {
+            doc = Jsoup.connect(url).get()
+        } catch (e: Exception) {
+            logger.error("공지사항 데이터 수집 실패")
+            val slackClient = Slack.getInstance()
+            slackClient.send(webHookUrl, "{\"text\" : \"${strategy.type} 공지사항 데이터 수집 실패, ${e.message}\"}")
+            return
+        }
         val rows = doc.select(strategy.selector)
 
         val notices = mutableListOf<SchoolNotice>()

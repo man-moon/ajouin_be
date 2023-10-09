@@ -50,8 +50,6 @@ class SecurityConfig(
             .authorizeHttpRequests {
                 it
                     .anyRequest().permitAll()
-//                    .requestMatchers(mvcMatcherBuilder.pattern("/auth/signup")).anonymous()
-//                    .requestMatchers(mvcMatcherBuilder.pattern("/auth/login")).anonymous()
 //                    .requestMatchers(mvcMatcherBuilder.pattern("/auth/**")).permitAll()
 //                    .requestMatchers(AntPathRequestMatcher("/h2-console/**")).permitAll()
 //                    .anyRequest().authenticated()

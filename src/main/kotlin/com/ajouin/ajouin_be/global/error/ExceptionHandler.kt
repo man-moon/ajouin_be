@@ -2,6 +2,8 @@ package com.ajouin.ajouin_be.global.error
 
 import com.ajouin.ajouin_be.global.error.exception.BusinessException
 import com.ajouin.ajouin_be.global.error.exception.ErrorCode
+import com.slack.api.Slack
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.ResponseEntity
 import org.springframework.security.authentication.BadCredentialsException
 import org.springframework.web.HttpRequestMethodNotSupportedException
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException
 import java.net.BindException
+import java.net.SocketTimeoutException
 
 @RestControllerAdvice
 class ExceptionHandler {

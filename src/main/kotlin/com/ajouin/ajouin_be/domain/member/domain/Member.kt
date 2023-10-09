@@ -7,7 +7,7 @@ import java.util.*
 
 @Entity
 class Member(
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     val nickname: String,
 
     @Embedded

@@ -17,7 +17,6 @@ class MemberController(
     @GetMapping("/member")
     fun getMemberInfo(): MemberResponse {
         val userId = (SecurityContextHolder.getContext().authentication.principal as AuthUser).id!!
-        logger.info(userId.toString())
         val findMember = memberServiceImpl.getMemberInfo(userId)
         return MemberResponse.fromMember(findMember)
     }

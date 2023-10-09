@@ -20,6 +20,7 @@ class NoticeService (
     fun getNotice(notices: List<String>): List<SchoolNotice> {
         val result = mutableListOf<SchoolNotice>()
 
+        //상단 고정 공지는 항상 모두 가져오고, 페이징 처리
         for (notice in notices) {
             val types: List<Type> = findEnumValuesContaining(notice)
             schoolNoticeQuerydslRepository.findByTypeContaining(types).let {
