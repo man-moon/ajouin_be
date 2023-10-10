@@ -26,7 +26,11 @@ jobs:
         run: |
           echo "${{ secrets.APPLICATION_PROPERTIES }}" > src/main/resources/application.properties
         shell: bash
-
+        
+      - name: Set UTF-8 Locale
+        run: export JAVA_TOOL_OPTIONS="-Dfile.encoding=UTF8"
+        shell: bash
+        
       - name: Build with Gradle
         run: ./gradlew clean build
         shell: bash
