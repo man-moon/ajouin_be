@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository
 @Repository
 interface BookMarkRepository: JpaRepository<BookMark, Long> {
     fun findAllByMember(member: Member): List<BookMark>
-
     fun findByMemberAndSchoolNotice(member: Member, schoolNotice: SchoolNotice): BookMark?
+    fun deleteAllByMember(member: Member)
 
 }

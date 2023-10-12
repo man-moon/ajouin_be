@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import org.springframework.web.reactive.function.client.WebClient
 import java.time.LocalDateTime
 
 @Service
@@ -44,9 +45,19 @@ class SchoolNoticeCrawler (
 
     fun crawlByStrategy(strategy: NoticeCrawlerStrategy) {
         val url = strategy.url
-        var doc: Document
+        val doc: Document
         try {
-            doc = Jsoup.connect(url).get()
+            doc = if(strategy.type == Type.간호대학) {
+                val webClient = WebClient.create()
+                val response = webClient.get()
+                    .uri(url)
+                    .retrieve()
+                    .bodyToMono(String::class.java)
+                    .block() ?: throw Exception("간호대학 크롤링 실패")
+                Jsoup.parse(response)
+            } else {
+                Jsoup.connect(url).get()
+            }
         } catch (e: Exception) {
             logger.error("공지사항 데이터 수집 실패")
             val slackClient = Slack.getInstance()
@@ -54,7 +65,6 @@ class SchoolNoticeCrawler (
             return
         }
         val rows = doc.select(strategy.selector)
-
         val notices = mutableListOf<SchoolNotice>()
 
         var lastIdByType = lastIdPerTypeRepository.findByType(strategy.type)
@@ -67,10 +77,10 @@ class SchoolNoticeCrawler (
         for (row in rows) {
             strategy.parseNotice(row, lastId)?.let {
                 //소프트웨어학과인 경우만 따로 처리
-                if(it.type == Type.소프트웨어학과0 || it.type == Type.소프트웨어학과1) {
-                    it.link = "http://software.ajou.ac.kr" + it.link
-                } else {
-                    it.link = url + it.link
+                it.link = when (it.type) {
+                    Type.소프트웨어학과0, Type.소프트웨어학과1 -> "http://software.ajou.ac.kr" + it.link
+                    Type.의과대학 -> it.link
+                    else -> url + it.link
                 }
                 notices.add(it)
             }

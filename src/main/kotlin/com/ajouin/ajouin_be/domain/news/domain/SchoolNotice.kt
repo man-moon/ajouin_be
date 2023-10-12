@@ -1,6 +1,7 @@
 package com.ajouin.ajouin_be.domain.news.domain
 
 import jakarta.persistence.*
+import java.time.LocalDateTime
 import java.util.Date
 
 @Entity
@@ -14,6 +15,8 @@ class SchoolNotice (
     val type: Type,
 
     val fetchId: Long,
+
+    val createdAt: LocalDateTime = LocalDateTime.now(),
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

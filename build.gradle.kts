@@ -67,6 +67,8 @@ dependencies {
 	//mysql
 	runtimeOnly("com.mysql:mysql-connector-j")
 
+	implementation("org.springframework.boot:spring-boot-starter-webflux")
+
 }
 
 tasks.withType<KotlinCompile> {
