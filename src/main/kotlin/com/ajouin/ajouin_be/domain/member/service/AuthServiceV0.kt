@@ -9,17 +9,20 @@ import com.ajouin.ajouin_be.domain.member.repository.EmailVerificationQuerydslRe
 import com.ajouin.ajouin_be.domain.member.repository.EmailVerificationRepository
 import com.ajouin.ajouin_be.domain.member.repository.MemberRepository
 import com.ajouin.ajouin_be.domain.model.InputFilter
+import com.ajouin.ajouin_be.domain.news.repository.BookMarkRepository
 import com.ajouin.ajouin_be.global.config.security.JwtTokenProvider
 import com.ajouin.ajouin_be.global.config.security.TokenInfo
 import com.ajouin.ajouin_be.global.error.exception.BusinessException
 import com.ajouin.ajouin_be.global.error.exception.ErrorCode
 import com.ajouin.ajouin_be.global.error.exception.InvalidValueException
 import lombok.extern.slf4j.Slf4j
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.util.*
 
 @Service
 @Slf4j
@@ -27,6 +30,7 @@ class AuthServiceV0(
     private val memberRepository: MemberRepository,
     private val emailVerificationQuerydslRepository: EmailVerificationQuerydslRepository,
     private val emailVerificationRepository: EmailVerificationRepository,
+    private val bookMarkRepository: BookMarkRepository,
     private val authenticationManagerBuilder: AuthenticationManagerBuilder,
     private val jwtTokenProvider: JwtTokenProvider,
     private val passwordEncoder: PasswordEncoder,
@@ -75,6 +79,17 @@ class AuthServiceV0(
         } else {
             throw InvalidValueException()
         }
+        return true
+    }
+
+    @Transactional
+    override fun withdrawal(
+        memberId: UUID
+    ): Boolean {
+        val member = memberRepository.findById(memberId)
+            ?: throw MemberNotFoundException()
+        bookMarkRepository.deleteAllByMember(member)
+        memberRepository.delete(member)
         return true
     }
 

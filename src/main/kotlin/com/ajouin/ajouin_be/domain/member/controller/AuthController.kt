@@ -1,5 +1,6 @@
 package com.ajouin.ajouin_be.domain.member.controller
 
+import com.ajouin.ajouin_be.domain.member.domain.AuthUser
 import com.ajouin.ajouin_be.domain.member.dto.response.CodeVerificationResponse
 import com.ajouin.ajouin_be.domain.member.dto.response.EmailVerificationResponse
 import com.ajouin.ajouin_be.domain.member.dto.response.SignupResponse
@@ -8,10 +9,12 @@ import com.ajouin.ajouin_be.domain.member.service.EmailVerificationService
 import com.ajouin.ajouin_be.domain.member.domain.EmailVerification
 import com.ajouin.ajouin_be.domain.member.domain.Member
 import com.ajouin.ajouin_be.domain.member.dto.request.*
+import com.ajouin.ajouin_be.domain.member.exception.MemberNotFoundException
 import com.ajouin.ajouin_be.global.config.security.TokenInfo
 import jakarta.validation.Valid
 import org.springframework.web.bind.annotation.*
 import org.springframework.http.*
+import org.springframework.security.core.Authentication
 
 @RestController
 @RequestMapping("/auth")
@@ -73,6 +76,15 @@ class AuthController(
         @Valid @RequestBody passwordResetRequest: PasswordResetRequest
     ): ResponseEntity<Any> {
         authService.resetPassword(passwordResetRequest)
+        return ResponseEntity.ok().build()
+    }
+
+    @DeleteMapping("/withdrawal")
+    fun withdrawal(
+        authentication: Authentication
+    ): ResponseEntity<Any> {
+        val memberId = (authentication.principal as AuthUser).id ?: throw MemberNotFoundException()
+        authService.withdrawal(memberId)
         return ResponseEntity.ok().build()
     }
 }

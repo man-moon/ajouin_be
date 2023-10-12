@@ -24,6 +24,7 @@ class EmailVerificationServiceV0(
     private val mailSender: JavaMailSender,
     private val emailConfig: EmailConfig,
 ): EmailVerificationService {
+    private val logger = org.slf4j.LoggerFactory.getLogger(EmailVerificationServiceV0::class.java)
     @Transactional
     override fun sendVerificationEmail(
         emailVerificationRequest: EmailVerificationRequest
@@ -122,6 +123,7 @@ class EmailVerificationServiceV0(
         try {
             mailSender.send(message)
         } catch (e: Exception) {
+            logger.error("Failed to send email", e)
             throw BusinessException(ErrorCode.INTERNAL_SERVER_ERROR)
         }
     }
