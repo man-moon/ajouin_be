@@ -10,11 +10,11 @@ class SchoolNotice (
     var link: String,
     val isTopFixed: Boolean,
     val date: Date,
-
+    var views: Long = 0,
     @Enumerated(EnumType.STRING)
     val type: Type,
 
-    val fetchId: Long,
+    var fetchId: Long,
 
     val createdAt: LocalDateTime = LocalDateTime.now(),
 

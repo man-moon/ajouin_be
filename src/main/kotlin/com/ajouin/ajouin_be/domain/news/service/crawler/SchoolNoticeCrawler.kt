@@ -76,11 +76,15 @@ class SchoolNoticeCrawler (
 
         for (row in rows) {
             strategy.parseNotice(row, lastId)?.let {
-                //소프트웨어학과인 경우만 따로 처리
                 it.link = when (it.type) {
                     Type.소프트웨어학과0, Type.소프트웨어학과1 -> "http://software.ajou.ac.kr" + it.link
                     Type.의과대학 -> it.link
                     else -> url + it.link
+                }
+                it.fetchId = when (it.type) {
+                    Type.소프트웨어학과0 -> it.fetchId + 2000000
+                    Type.소프트웨어학과1 -> it.fetchId + 3000000
+                    else -> it.fetchId
                 }
                 notices.add(it)
             }

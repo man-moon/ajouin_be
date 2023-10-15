@@ -7,7 +7,9 @@ import com.ajouin.ajouin_be.domain.news.dto.request.NoticeRequest
 import com.ajouin.ajouin_be.domain.news.dto.response.InstagramNoticeResponse
 import com.ajouin.ajouin_be.domain.news.dto.response.NoticeResponse
 import com.ajouin.ajouin_be.domain.news.service.NoticeService
+import org.apache.coyote.Response
 import org.slf4j.LoggerFactory
+import org.springframework.http.ResponseEntity
 import org.springframework.security.core.Authentication
 import org.springframework.web.bind.annotation.*
 
@@ -29,6 +31,18 @@ class NoticeController(
         val memberId = (authentication.principal as AuthUser).id ?: throw MemberNotFoundException()
         val bookMarks = bookMarkService.getBookMark(memberId)
         return NoticeResponse(notices, bookMarks)
+    }
+
+    @GetMapping("/notices")
+    fun getSpecificNotices(@RequestParam("type") type: String, @RequestParam("offset") offset: Long): NoticeResponse {
+        val notices = noticeService.getNotice(type, offset)
+        return NoticeResponse(notices)
+    }
+
+    @PostMapping("/views")
+    fun postViews(@RequestBody noticeId: Long): ResponseEntity<Any> {
+        noticeService.postViews(noticeId)
+        return ResponseEntity.ok().build()
     }
 
     @PostMapping("/council_notices")

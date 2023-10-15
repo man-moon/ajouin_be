@@ -10,7 +10,7 @@ import jakarta.validation.constraints.Size
 data class SignupRequest(
     @field:Valid
     val email: Email,
-    @field:NotBlank @field:Size(min = 8)
+    @field:NotBlank @field:Size(min = 8, max = 20)
     val password: String,
 ) {
     fun toMember(): Member {
