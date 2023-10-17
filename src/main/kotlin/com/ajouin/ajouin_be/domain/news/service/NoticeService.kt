@@ -26,7 +26,7 @@ class NoticeService (
 
         for (notice in notices) {
             val types: List<Type> = findEnumValuesContaining(notice)
-            schoolNoticeQuerydslRepository.findNoticesByPaging(0, 10, types, true).let {
+            schoolNoticeQuerydslRepository.findNoticesByPaging(0, 20, types, true).let {
                 result.addAll(it)
             }
         }
@@ -39,9 +39,9 @@ class NoticeService (
     fun getNotice(type: String, offset: Long): List<SchoolNotice> {
         val types: List<Type> = findEnumValuesContaining(type)
         return if(types.contains(Type.소프트웨어학과0)) {
-            schoolNoticeQuerydslRepository.findNoticesByPagingForSoftwareDep(offset, 10, types, false)
+            schoolNoticeQuerydslRepository.findNoticesByPagingForSoftwareDep(offset, 20, types, false)
         } else {
-            schoolNoticeQuerydslRepository.findNoticesByPaging(offset, 10, types, false)
+            schoolNoticeQuerydslRepository.findNoticesByPaging(offset, 20, types, false)
         }
     }
 
