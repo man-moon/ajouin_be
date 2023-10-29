@@ -81,11 +81,6 @@ class SchoolNoticeCrawler (
                     Type.의과대학 -> it.link
                     else -> url + it.link
                 }
-                it.fetchId = when (it.type) {
-                    Type.소프트웨어학과0 -> it.fetchId + 2000000
-                    Type.소프트웨어학과1 -> it.fetchId + 3000000
-                    else -> it.fetchId
-                }
                 notices.add(it)
             }
         }

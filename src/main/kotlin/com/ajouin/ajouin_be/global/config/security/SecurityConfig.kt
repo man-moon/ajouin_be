@@ -70,6 +70,7 @@ class SecurityConfig(
         config.addAllowedOrigin("http://localhost:5173")
         config.addAllowedOrigin("http://192.168.0.5:5173")
         config.addAllowedOrigin("https://ajou.in")
+        config.addAllowedOrigin("https://www.ajou.in")
         config.addAllowedHeader("*")
         config.addAllowedMethod("*")
         config.exposedHeaders = listOf("Authorization")

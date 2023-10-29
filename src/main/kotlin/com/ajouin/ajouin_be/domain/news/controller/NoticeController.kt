@@ -23,6 +23,7 @@ class NoticeController(
 
     @PostMapping("/notices")
     fun getNotices(authentication: Authentication?, @RequestBody noticeRequest: NoticeRequest): NoticeResponse {
+        logger.info("요청받음")
         val notices = noticeService.getNotice(noticeRequest.notices)
         if(authentication == null) {
             return NoticeResponse(notices)
