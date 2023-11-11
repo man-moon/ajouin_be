@@ -47,5 +47,39 @@ class Type2Utils {
                 )
             }
         }
+
+        fun getIfTopFixedNotice(type: Type, row: Element): SchoolNotice? {
+            if(row.attr("height") != "45") return null
+
+            var num: String = "0"
+
+            val isTopFixed = row.select("td > img[src=\"/skin/bbs/basic_responsive_new/images/btn_notice.gif\"]").firstOrNull()
+            if(isTopFixed != null) {
+                num = "공지"
+            }
+
+            val titleAndLinkElement = row.select("td.responsive03 > a")
+            val title = titleAndLinkElement.text().trim()
+            val link = titleAndLinkElement.attr("href")
+
+            if(title == "") return null
+
+            val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+            val dateText = row.select("td.responsive03 > p.tablet_regist_date").text()
+            val date = dateFormat.parse(dateText) ?: Date()
+
+            val id = Utils.getPostId(link)
+
+            return if (num == "공지")
+                SchoolNotice(
+                    title = title,
+                    link = link,
+                    type = type,
+                    isTopFixed = true,
+                    date = date,
+                    fetchId = id,
+                )
+            else null
+        }
     }
 }

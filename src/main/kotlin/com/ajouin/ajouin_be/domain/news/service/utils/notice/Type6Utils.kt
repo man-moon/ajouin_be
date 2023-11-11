@@ -34,5 +34,26 @@ class Type6Utils {
                 )
             }
         }
+
+        fun getIfTopFixedNotice(type: Type, row: Element): SchoolNotice? {
+            val num = row.select("td.b-num-box").text()
+            val title = row.select("td.b-td-left > div > a").text()
+            val link = row.select("td.b-td-left > div > a").attr("href")
+            val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+            val date: Date = dateFormat.parse(row.select("td:nth-child(5)").text())
+
+            val id = Utils.getPostId(link)
+
+            return if (num == "공지")
+                SchoolNotice(
+                    title = title,
+                    link = link,
+                    type = type,
+                    isTopFixed = true,
+                    date = date,
+                    fetchId = id,
+                )
+            else null
+        }
     }
 }

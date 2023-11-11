@@ -16,4 +16,7 @@ class FinancialEngineeringNoticeStrategy : NoticeCrawlerStrategy {
     override fun parseNotice(row: Element, lastId: Long): SchoolNotice? {
         return Type1Utils.parseNotice(type, row, lastId)
     }
+    override fun getIfTopFixedNotice(row: Element): SchoolNotice? {
+        return Type1Utils.getIfTopFixedNotice(type, row)
+    }
 }

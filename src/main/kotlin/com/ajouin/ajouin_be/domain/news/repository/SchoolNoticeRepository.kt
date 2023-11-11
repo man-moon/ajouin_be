@@ -11,4 +11,7 @@ import java.util.*
 @Repository
 interface SchoolNoticeRepository: JpaRepository<SchoolNotice, Long> {
     fun findTopByOrderByIdDesc(): SchoolNotice?
+
+    fun findAllByTypeAndIsTopFixedIsTrue(type: Type): List<SchoolNotice>
+    fun findByFetchIdAndType(fetchId: Long, type: Type): SchoolNotice?
 }

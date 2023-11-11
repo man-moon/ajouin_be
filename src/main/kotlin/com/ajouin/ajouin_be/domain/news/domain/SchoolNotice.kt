@@ -8,7 +8,7 @@ import java.util.Date
 class SchoolNotice (
     val title: String,
     var link: String,
-    val isTopFixed: Boolean,
+    var isTopFixed: Boolean,
     val date: Date,
     var views: Long = 0,
     @Enumerated(EnumType.STRING)

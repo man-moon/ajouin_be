@@ -34,5 +34,9 @@ class Type3Utils {
                 )
             }
         }
+
+        fun getIfTopFixedNotice(type: Type, row: Element): SchoolNotice? {
+            return null
+        }
     }
 }

@@ -10,4 +10,5 @@ interface NoticeCrawlerStrategy {
     val type: Type
 
     fun parseNotice(row: Element, lastId: Long): SchoolNotice?
+    fun getIfTopFixedNotice(row: Element): SchoolNotice?
 }

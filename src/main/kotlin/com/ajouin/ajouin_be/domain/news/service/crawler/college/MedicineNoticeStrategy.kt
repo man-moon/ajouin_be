@@ -4,6 +4,7 @@ import com.ajouin.ajouin_be.domain.news.service.crawler.NoticeCrawlerStrategy
 import com.ajouin.ajouin_be.domain.news.domain.SchoolNotice
 import com.ajouin.ajouin_be.domain.news.domain.Type
 import com.ajouin.ajouin_be.domain.news.service.utils.notice.Type10Utils
+import com.ajouin.ajouin_be.domain.news.service.utils.notice.Type1Utils
 import org.jsoup.nodes.Element
 import org.springframework.stereotype.Component
 
@@ -15,5 +16,8 @@ class MedicineNoticeStrategy : NoticeCrawlerStrategy {
 
     override fun parseNotice(row: Element, lastId: Long): SchoolNotice? {
         return Type10Utils.parseNotice(type, row, lastId)
+    }
+    override fun getIfTopFixedNotice(row: Element): SchoolNotice? {
+        return Type10Utils.getIfTopFixedNotice(type, row)
     }
 }

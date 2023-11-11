@@ -17,4 +17,7 @@ class NursingNoticeStrategy : NoticeCrawlerStrategy {
     override fun parseNotice(row: Element, lastId: Long): SchoolNotice? {
         return Type9Utils.parseNotice(type, row, lastId)
     }
+    override fun getIfTopFixedNotice(row: Element): SchoolNotice? {
+        return Type9Utils.getIfTopFixedNotice(type, row)
+    }
 }

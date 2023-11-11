@@ -74,6 +74,9 @@ class SchoolNoticeCrawler (
 
         var lastId = lastIdByType.lastId
 
+        val oldTopFixedNotices = schoolNoticeRepository.findAllByTypeAndIsTopFixedIsTrue(strategy.type)
+        val newTopFixedNotices = mutableListOf<SchoolNotice>()
+
         for (row in rows) {
             strategy.parseNotice(row, lastId)?.let {
                 it.link = when (it.type) {
@@ -81,11 +84,41 @@ class SchoolNoticeCrawler (
                     Type.의과대학 -> it.link
                     else -> url + it.link
                 }
+
                 notices.add(it)
+            }
+            strategy.getIfTopFixedNotice(row)?.let {
+                it.link = when (it.type) {
+                    Type.소프트웨어학과0, Type.소프트웨어학과1 -> "http://software.ajou.ac.kr" + it.link
+                    Type.의과대학 -> it.link
+                    else -> url + it.link
+                }
+                newTopFixedNotices.add(it)
+            }
+        }
+
+        val newTopFixedNoticesIds = newTopFixedNotices.map { it.fetchId }.toSet()
+
+        for (oldTopFixedNotice in oldTopFixedNotices) {
+            if (oldTopFixedNotice.fetchId !in newTopFixedNoticesIds) {
+                oldTopFixedNotice.isTopFixed = false
+            }
+        }
+        //new 순회하면서 db에 있는지 확인.
+        //있으면, isTopFixed를 true로 변경
+        for (newTopFixedNotice in newTopFixedNotices) {
+            val notice = schoolNoticeRepository.findByFetchIdAndType(newTopFixedNotice.fetchId, newTopFixedNotice.type)
+            if(notice != null) {
+                notice.isTopFixed = true
+            }
+            //db에 없고, notices 배열에도 존재하지 않는다면, 새롭게 추가한다.
+            if (notice == null && newTopFixedNotice.fetchId !in notices.map { it.fetchId }) {
+                schoolNoticeRepository.save(newTopFixedNotice)
             }
         }
 
         lastId = notices.maxOfOrNull { it.fetchId } ?: return
+
         lastIdByType.lastId = lastId
 
         schoolNoticeRepository.saveAll(notices)

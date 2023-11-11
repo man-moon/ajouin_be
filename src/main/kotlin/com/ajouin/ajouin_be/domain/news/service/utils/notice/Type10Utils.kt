@@ -35,5 +35,25 @@ class Type10Utils {
                 )
             }
         }
+
+        fun getIfTopFixedNotice(type: Type, row: Element): SchoolNotice? {
+            val num = row.select("td.td_num").text()
+            val title = row.select("td.td_qna > a > span").text()
+            val id = row.select("td.td_qna > a").attr("href").substringAfter("no: ").substringBefore(" } )").toLongOrNull() ?: return null
+            val link = "https://www.ajoumc.or.kr/medicine/board/commBoardUVNoticeView.do?no=$id"
+            val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+            val date: Date = dateFormat.parse(row.select("td.td_date").text())
+
+            return if (num == "공지")
+                SchoolNotice(
+                    title = title,
+                    link = link,
+                    type = type,
+                    isTopFixed = true,
+                    date = date,
+                    fetchId = id,
+                )
+            else null
+        }
     }
 }
