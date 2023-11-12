@@ -42,4 +42,8 @@ enum class ErrorCode(
 
     // SchoolNotice
     SCHOOL_NOTICE_NOT_FOUND(400, "S001", "존재하지 않는 공지사항이에요."),
+
+    // Wiki
+    CATEGORY_NOT_FOUND(400, "W001", "존재하지 않는 카테고리에요."),
+    DOCUMENT_NOT_FOUND(400, "W002", "존재하지 않는 문서에요."),
 }
