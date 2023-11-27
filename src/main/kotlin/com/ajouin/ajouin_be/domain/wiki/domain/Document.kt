@@ -11,6 +11,7 @@ class Document (
     val title: String,
     @NotBlank
     @Lob
+    @Column(columnDefinition = "MEDIUMTEXT")
     val content: String,
 
     @ManyToOne(fetch = FetchType.LAZY)

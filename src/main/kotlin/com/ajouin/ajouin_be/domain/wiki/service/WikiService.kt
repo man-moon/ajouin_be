@@ -13,7 +13,6 @@ import com.ajouin.ajouin_be.domain.wiki.exception.CategoryNotFoundException
 import com.ajouin.ajouin_be.domain.wiki.exception.DocumentNotFoundException
 import com.ajouin.ajouin_be.domain.wiki.repository.CategoryRepository
 import com.ajouin.ajouin_be.domain.wiki.repository.DocumentRepository
-import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.util.UUID
@@ -125,10 +124,9 @@ class WikiService(
 
     @Transactional
     fun getAllVersionsByDocument(
-        documentVersionsRequest: DocumentVersionsRequest
+        title: String
     ): DocumentListResponse {
-        val documentTitle = documentVersionsRequest.title
-        val documents = documentRepository.findAllByTitle(documentTitle)
+        val documents = documentRepository.findAllByTitle(title)
             ?: throw DocumentNotFoundException()
 
         val documentsListResponse = mutableListOf<DocumentResponse>()

@@ -55,9 +55,9 @@ class WikiController(
     }
 
     //문서 모든 버전 조회
-    @GetMapping("/versions")
-    fun getAllVersions(@RequestBody documentVersionsRequest: DocumentVersionsRequest): DocumentListResponse {
-        return wikiService.getAllVersionsByDocument(documentVersionsRequest)
+    @GetMapping("/versions/{title}")
+    fun getAllVersions(@PathVariable title: String): DocumentListResponse {
+        return wikiService.getAllVersionsByDocument(title)
     }
 
     //카테고리 별 문서리스트 조회
