@@ -36,6 +36,8 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-security")
 	implementation("org.springframework.boot:spring-boot-starter-validation")
 	implementation("org.springframework.boot:spring-boot-starter-web")
+	implementation("org.springframework.boot:spring-boot-starter-actuator")
+	implementation("io.micrometer:micrometer-registry-prometheus")
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("io.jsonwebtoken:jjwt-api:0.11.5")
@@ -53,8 +55,6 @@ dependencies {
 	implementation ("com.querydsl:querydsl-jpa:5.0.0:jakarta")
 	kapt("com.querydsl:querydsl-apt:5.0.0:jakarta")
 
-	// redis
-	implementation("org.springframework.boot:spring-boot-starter-data-redis")
 
 	//jsoup
 	implementation("org.jsoup:jsoup:1.16.1")
